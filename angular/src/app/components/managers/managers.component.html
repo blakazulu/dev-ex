@@ -1,0 +1,18 @@
+<mat-card class="card">
+  <mat-card-title>Managers List</mat-card-title>
+  <mat-card-content>
+    <cdk-virtual-scroll-viewport [itemSize]="managers.length" class="virtual-scroll-viewport">
+      <div *cdkVirtualFor="let manager of managers" class="table-item">
+        <span class="show-ellipsis" isEllipsis>{{manager.firstName}}</span>
+        <span class="show-ellipsis" isEllipsis>{{manager.lastName}}</span>
+        <span class="show-ellipsis" isEllipsis>{{manager.position}}</span>
+        <a [routerLink]="['/report', manager.id]" mat-raised-button>View</a>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+  <mat-card-footer>
+    <span class="total">Total Managers: {{managers.length}}</span>
+    <mat-progress-bar *ngIf="isLoading" color="warn" mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>

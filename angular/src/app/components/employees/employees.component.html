@@ -1,0 +1,18 @@
+<mat-card class="card">
+  <mat-card-title>Employees List</mat-card-title>
+  <mat-card-content>
+    <cdk-virtual-scroll-viewport [itemSize]="employees.length" class="virtual-scroll-viewport">
+      <div *cdkVirtualFor="let employee of employees" class="table-item">
+        <span class="show-ellipsis" isEllipsis>{{employee.firstName}}</span>
+        <span class="show-ellipsis" isEllipsis>{{employee.lastName}}</span>
+        <span class="show-ellipsis" isEllipsis>{{employee.position}}</span>
+        <a [routerLink]="['/worker', employee.id]" mat-raised-button>View</a>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+  <mat-card-footer>
+    <span class="total">Total Employees: {{employees.length}}</span>
+    <mat-progress-bar *ngIf="isLoading" color="warn" mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>

@@ -1,0 +1,22 @@
+<ng-container *ngIf="manager; else noManager">
+  <mat-card class="card">
+    <mat-card-title>{{manager.firstName}} {{manager.lastName}} - Reports List</mat-card-title>
+    <mat-card-content>
+      <cdk-virtual-scroll-viewport [itemSize]="reports.length" class="virtual-scroll-viewport">
+        <div *cdkVirtualFor="let report of reports" class="table-item">
+          <span class="show-ellipsis text" isEllipsis>{{report.text}}</span>
+          <span class="show-ellipsis date" isEllipsis>{{report.assignedDate | date : 'short'}}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <mat-card-footer>
+      <span class="total">Total Reports: {{reports.length}}</span>
+      <mat-progress-bar *ngIf="isLoading" color="warn" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+
+</ng-container>
+<ng-template #noManager>
+  <h2>Manager was not found</h2>
+</ng-template>

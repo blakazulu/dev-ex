@@ -1,0 +1,29 @@
+<ngx-loading-bar [includeSpinner]="false" color="#f44336"></ngx-loading-bar>
+
+<mat-toolbar color="primary">
+  <button [matMenuTriggerFor]="menu"
+          aria-label="icon-button with menu icon"
+          mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>2bPrecise - Development exercise - Displaying all {{selectedLink}}</span>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <a (click)="changeTitle('Employees')" routerLink="/worker/employees">
+    <button mat-menu-item>
+      <mat-icon>group_work</mat-icon>
+      <span>Employees</span>
+    </button>
+  </a>
+  <a (click)="changeTitle('Managers')" routerLink="/report">
+    <button mat-menu-item>
+      <mat-icon>group</mat-icon>
+      <span>Managers</span>
+    </button>
+  </a>
+</mat-menu>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,46 @@
+mat-card-header {
+  margin-bottom: 16px;
+
+  img {
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  }
+
+  .details-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 48px;
+    width: 100%;
+
+    .desc {
+      display: inline-block;
+      width: 20%;
+    }
+
+    .divider {
+      border-top: 1px solid black;
+    }
+
+    button {
+      margin-left: 128px;
+    }
+  }
+}
+
+mat-card-content {
+  .no-content {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .container {
+    border: 1px solid black;
+    height: 200px;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+}
+
+::ng-deep.mat-card-header-text {
+  display: none;
+}

@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Create a new report</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="fill">
+    <mat-label>Report text</mat-label>
+    <input [(ngModel)]="textValue" matInput type="text">
+    <button (click)="textValue=''" *ngIf="textValue" aria-label="Clear" mat-icon-button matSuffix>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="textValue.length === 0" [mat-dialog-close]="true"
+          (click)="saveReport()"
+          cdkFocusInitial mat-button>Save</button>
+</mat-dialog-actions>

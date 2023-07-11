@@ -1,0 +1,65 @@
+<mat-card class="card">
+  <mat-card-header>
+    <img alt="profile picture"
+         height="150"
+         ngSrc="https://random.imagecdn.app/100/150"
+         priority
+         width="100">
+    <div class="details-header">
+      <div>
+        <span class="desc">Name:</span>
+        <span>{{employee?.firstName}} {{employee?.lastName}}</span>
+      </div>
+      <div>
+        <span class="desc">Position:</span>
+        <span>{{employee?.position}}</span>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <span class="desc">Manager:</span>
+        <span>{{manager?.firstName}} {{manager?.lastName}}</span>
+        <ng-container *ngIf="employee?.id !== employee?.managerId; else CEO">
+          <button color="primary" mat-raised-button (click)="openReportDialog()">Report</button>
+        </ng-container>
+        <ng-template #CEO>
+          <button color="primary" disabled mat-raised-button>It's the CEO!!!</button>
+        </ng-template>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="tasks.length > 0; else noTasks">
+      <span>My tasks:</span>
+      <div class="container">
+        <cdk-virtual-scroll-viewport [itemSize]="tasks.length" class="virtual-scroll-viewport">
+          <div *cdkVirtualFor="let task of tasks" class="table-item">
+            <span class="show-ellipsis text" isEllipsis>{{task.text}}</span>
+            <span class="show-ellipsis date" isEllipsis>{{task.assignedDate | date : 'short'}}</span>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </ng-container>
+    <ng-template #noTasks>
+      <span class="no-content">No tasks available.</span>
+    </ng-template>
+
+    <ng-container *ngIf="subordinates.length > 0; else noSub">
+      <span>My subordinates:</span>
+      <div class="container">
+        <cdk-virtual-scroll-viewport [itemSize]="subordinates.length" class="virtual-scroll-viewport">
+          <div *cdkVirtualFor="let sub of subordinates" class="table-item">
+            <span class="show-ellipsis" isEllipsis>{{sub.firstName}}</span>
+            <span class="show-ellipsis" isEllipsis>{{sub.lastName}}</span>
+            <span class="show-ellipsis" isEllipsis>{{sub.position}}</span>
+            <button color="primary" mat-raised-button>Assign Task</button>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </ng-container>
+    <ng-template #noSub>
+      <span class="no-content">No subordinates available.</span>
+    </ng-template>
+
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+</mat-card>
