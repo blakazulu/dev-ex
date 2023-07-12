@@ -7,10 +7,24 @@ namespace dev_ex.data
     public class DataAccess
     {
         private string FilePath { get; }
+        private string jsonData;
+        private List<Worker> workers;
+        private List<Task> tasks;
+        private List<Report> reports;
 
         public DataAccess(string filePath)
         {
             FilePath = filePath;
+            jsonData = ReadJsonData();
+            initializeVariables();
+        }
+
+        private void initializeVariables()
+        {
+            var deserializedData = JsonConvert.DeserializeObject<JsonData>(jsonData);
+            workers = deserializedData.Workers;
+            tasks = deserializedData.Tasks;
+            reports = deserializedData.Reports;
         }
 
         public string ReadJsonData()
@@ -20,11 +34,6 @@ namespace dev_ex.data
 
         public void WriteJsonTaskData(List<Task> newTasks)
         {
-            // Get all workers, tasks, and reports
-            List<Worker> workers = GetAllWorkers();
-            List<Task> tasks = GetAllTasks();
-            List<Report> reports = GetAllReports();
-
             // Merge the new tasks with the existing tasks
             tasks.AddRange(newTasks);
 
@@ -38,46 +47,41 @@ namespace dev_ex.data
             var jsonDataString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
             File.WriteAllText(FilePath, jsonDataString);
+            initializeVariables();
         }
 
         public void WriteReportJsonData(Report report)
         {
-            // Get all workers, tasks, and existing reports
-            List<Worker> workers = GetAllWorkers();
-            List<Task> tasks = GetAllTasks();
-            List<Report> existingReports = GetAllReports();
-
             // Find the index of the report to update
-            int reportIndex = existingReports.FindIndex(r => r.Id == report.Id);
+            int reportIndex = reports.FindIndex(r => r.Id == report.Id);
             if (reportIndex != -1)
             {
                 // Update the existing report with the new data
-                existingReports[reportIndex] = report;
+                reports[reportIndex] = report;
             }
             else
             {
                 // Add the new report to the existing reports
-                existingReports.Add(report);
+                reports.Add(report);
             }
 
             var jsonData = new JsonData
             {
                 Workers = workers,
                 Tasks = tasks,
-                Reports = existingReports
+                Reports = reports
             };
 
             var jsonDataString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
             File.WriteAllText(FilePath, jsonDataString);
+            initializeVariables();
         }
 
         public void WriteManagersJsonData(List<Worker> managers)
         {
             // Get all employees, tasks, and reports
             List<Worker> employees = GetAllEmployees();
-            List<Task> tasks = GetAllTasks();
-            List<Report> reports = GetAllReports();
 
             // Merge the managers list into the employees list
             List<Worker> workers = employees.Concat(managers).ToList();
@@ -96,14 +100,11 @@ namespace dev_ex.data
 
         public List<Worker> GetAllWorkers()
         {
-            string jsonData = ReadJsonData();
-            var deserializedData = JsonConvert.DeserializeObject<JsonData>(jsonData);
-            return deserializedData.Workers;
+            return workers;
         }
 
         public Worker GetWorkerById(int id)
         {
-            List<Worker> workers = GetAllWorkers();
             Worker worker = workers.FirstOrDefault(e => e.Id == id);
             return worker;
         }
@@ -112,7 +113,6 @@ namespace dev_ex.data
 
         public List<Worker> GetAllEmployees()
         {
-            List<Worker> workers = GetAllWorkers();
             List<Worker> employees = workers.Where(w => w.EmployeesIds.Count == 0).ToList();
             return employees;
         }
@@ -127,7 +127,6 @@ namespace dev_ex.data
         // CRUD operations for Managers
         public List<Worker> GetAllManagers()
         {
-            List<Worker> workers = GetAllWorkers();
             List<Worker> managers = workers.Where(w => w.EmployeesIds.Count > 0).ToList();
             return managers;
         }
@@ -141,7 +140,6 @@ namespace dev_ex.data
 
         public List<Worker> GetManagerWorkers(int id)
         {
-            List<Worker> workers = GetAllWorkers();
             List<int> employeesIds = GetManagerById(id).EmployeesIds;
 
             List<Worker> managerWorkers = workers.Where(w => employeesIds.Contains(w.Id)).ToList();
@@ -151,28 +149,23 @@ namespace dev_ex.data
         // CRUD operations for Tasks
         public List<Task> GetAllTasks()
         {
-            string jsonData = ReadJsonData();
-            var deserializedData = JsonConvert.DeserializeObject<JsonData>(jsonData);
-            return deserializedData.Tasks;
+            return tasks;
         }
 
         public List<Task> GetAllTasksForWorker(int id)
         {
-            List<Task> tasks = GetAllTasks();
             List<Task> workerTasks = tasks.Where(t => t.AssigneeId == id).ToList();
             return workerTasks;
         }
 
         public Task GetTaskById(int id)
         {
-            List<Task> tasks = GetAllTasks();
             Task task = tasks.FirstOrDefault(t => t.Id == id);
             return task;
         }
 
         public bool CreateTask(Task task)
         {
-            List<Task> tasks = GetAllTasks();
             task.Id = GetNewTaskId(tasks);
             task.AssignedDate = DateTime.Now;
             try
@@ -190,9 +183,7 @@ namespace dev_ex.data
         // CRUD operations for Reports
         public List<Report> GetAllReports()
         {
-            string jsonData = ReadJsonData();
-            var deserializedData = JsonConvert.DeserializeObject<JsonData>(jsonData);
-            return deserializedData.Reports;
+            return reports;
         }
 
         public bool CreateReport(Report report, int managerId)
@@ -217,22 +208,19 @@ namespace dev_ex.data
 
         public List<Report> GetAllReportsForManager(int managerId)
         {
-            List<Report> allReports = GetAllReports();
-            List<Report> managerReports = allReports.Where(r => r.AssigneeId == managerId).ToList();
+            List<Report> managerReports = reports.Where(r => r.AssigneeId == managerId).ToList();
             return managerReports;
         }
 
         public Report GetReportById(int id)
         {
-            List<Report> reports = GetAllReports();
             Report report = reports.FirstOrDefault(t => t.Id == id);
             return report;
         }
 
         public List<Report> GetAllReportsForWorker(int workerId)
         {
-            List<Report> allReports = GetAllReports();
-            List<Report> workerReports = allReports.Where(r => r.AssigneeId == workerId).ToList();
+            List<Report> workerReports = reports.Where(r => r.AssigneeId == workerId).ToList();
             return workerReports;
         }
 

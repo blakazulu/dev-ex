@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\dev-ex\\back\\dev-ex.csproj": {}
+    "D:\\liraz-amir\\back\\dev-ex.csproj": {}
   },
   "projects": {
-    "D:\\dev-ex\\back\\dev-ex.csproj": {
+    "D:\\liraz-amir\\back\\dev-ex.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\dev-ex\\back\\dev-ex.csproj",
+        "projectUniqueName": "D:\\liraz-amir\\back\\dev-ex.csproj",
         "projectName": "dev-ex",
-        "projectPath": "D:\\dev-ex\\back\\dev-ex.csproj",
+        "projectPath": "D:\\liraz-amir\\back\\dev-ex.csproj",
         "packagesPath": "C:\\Users\\liraz\\.nuget\\packages\\",
-        "outputPath": "D:\\dev-ex\\back\\obj\\",
+        "outputPath": "D:\\liraz-amir\\back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\liraz\\AppData\\Roaming\\NuGet\\NuGet.Config",

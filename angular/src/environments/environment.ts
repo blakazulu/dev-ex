@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5029/api' // Replace with your backend server endpoint
+  apiUrl: 'http://localhost:5029/api' // regular
+  // apiUrl: 'https://localhost:7004/api' // debug endpoint
 };
 
 /*
